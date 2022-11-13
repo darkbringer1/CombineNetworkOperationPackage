@@ -27,8 +27,8 @@ open class APIServiceProvider<T: Codable> {
         var url = try baseURL.asURL()
         
         if let path = path {
-            if #available(macOS 13.0, *) {
-                url = url.appending(components: path)
+            if #available(iOS 16.0, *) {
+                url = url.appending(path: path)
             } else {
                 // Fallback on earlier versions
                 url = url.appendingPathComponent(path)

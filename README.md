@@ -1,3 +1,2 @@
 # CombineNetworkOperationPackage
-
-A description of this package.
+Network package created with Combine Framework

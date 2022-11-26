@@ -61,6 +61,38 @@ public class APIManager {
             .eraseToAnyPublisher()
     }
     
+    /// Dispatches a download request with a URLRequest and returns a publisher
+    /// - Parameter request: URLRequest
+    /// - Returns: A publisher with the provided decoded data or an error
+    @available(macOS 10.15, *)
+    public func download(request: URLRequest) -> AnyPublisher<Data, Error> {
+        
+        //Log request
+        debugPrint("[\(request.httpMethod?.uppercased() ?? "")] '\(String(describing: request.url))'")
+        return urlSession
+            .dataTaskPublisher(for: request)
+            .subscribe(on: defaultQueue)
+        // Map on Request response
+            .tryMap ({ data, response in
+                // If the response is invalid, throw an error
+                guard let response = response as? HTTPURLResponse else {
+                    throw self.httpError(0)
+                }
+                
+                // Log request response
+                debugPrint("[\(response.statusCode)] '\(String(describing: response.url))'")
+                
+                if !(200...299).contains(response.statusCode) {
+                    throw self.httpError(response.statusCode)
+                }
+                
+                // Return response data
+                return data
+            })
+            .receive(on: mainQueue)
+        // Expose the publisher
+            .eraseToAnyPublisher()
+    }
     /// Parses a HTTP StatusCode and returns a proper error
     /// - Parameter statusCode: HTTP status code
     /// - Returns: Mapped Error

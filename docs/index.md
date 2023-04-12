@@ -102,7 +102,7 @@ struct Post: Codable {
 }
 ```
 
-For additional configuration options and examples, please see the [documentation](https://github.com/<username>/CombineNetworkOperationPackage).
+For additional configuration options and examples, please see the [documentation](https://github.com/darkbringer1/CombineNetworkOperationPackage).
 
 ## Contributions
 
